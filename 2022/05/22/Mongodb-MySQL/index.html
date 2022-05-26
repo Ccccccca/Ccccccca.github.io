@@ -28,7 +28,7 @@
 <meta property="og:description" content="最近在看GitHub上star最多的SpringBoot项目，项目中使用了MySQL、NoSql数据库Mongodb以及分布式缓存Redis。本文对MySQL和Mongodb的使用场景做一个总结。 术语对比   MySQL Mongodb    Database Database   Table Collection   Row Document   Column Field   index in">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-22T11:09:34.000Z">
-<meta property="article:modified_time" content="2022-05-24T01:42:58.457Z">
+<meta property="article:modified_time" content="2022-05-26T22:02:29.901Z">
 <meta property="article:author" content="Jerlyn">
 <meta property="article:tag" content="Database">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-24 09:42:58" itemprop="dateModified" datetime="2022-05-24T09:42:58+08:00">2022-05-24</time>
+                <time title="修改时间：2022-05-27 06:02:29" itemprop="dateModified" datetime="2022-05-27T06:02:29+08:00">2022-05-27</time>
               </span>
 
           
@@ -291,7 +291,7 @@
 <li><p>游标<br>find命令并不直接返回结果，而是返回一个结果集的迭代器，即游标。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">想要获取数据，我们可以使用next方法来遍历游标，如下：</span><br><span class="line">var myCursor = db.inventory.find( &#123; <span class="built_in">type</span>: <span class="string">&quot;food&quot;</span> &#125; );</span><br><span class="line">var myDocument = myCursor.hasNext() ? myCursor.next() : null;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (myDocument) &#123;</span><br><span class="line">    var myItem = myDocument.item;</span><br><span class="line">    <span class="built_in">print</span>(tojson(myItem));</span><br><span class="line">&#125;</span><br><span class="line">使用forEach方法也能实现游标的遍历，如下：</span><br><span class="line">var myCursor =  db.inventory.find( &#123; <span class="built_in">type</span>: <span class="string">&quot;food&quot;</span> &#125; );</span><br><span class="line">myCursor.forEach(printjson);</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="MongoDB-Atlas"><a href="#MongoDB-Atlas" class="headerlink" title="MongoDB Atlas"></a>MongoDB Atlas</h3><p>JDK 11<br>Mongodb 5.0+<br><a target="_blank" rel="noopener" href="https://cloud.mongodb.com/">https://cloud.mongodb.com/</a><br>账号<a href="mailto:&#49;&#53;&#50;&#49;&#54;&#54;&#53;&#54;&#48;&#x32;&#56;&#64;&#49;&#x36;&#x33;&#x2e;&#99;&#111;&#x6d;">&#49;&#53;&#50;&#49;&#54;&#54;&#53;&#54;&#48;&#x32;&#56;&#64;&#49;&#x36;&#x33;&#x2e;&#99;&#111;&#x6d;</a></p>
+<h3 id="MongoDB-Atlas"><a href="#MongoDB-Atlas" class="headerlink" title="MongoDB Atlas"></a>MongoDB Atlas</h3><p>JDK 11<br>Mongodb 5.0+<br><a target="_blank" rel="noopener" href="https://cloud.mongodb.com/">https://cloud.mongodb.com/</a><br>账号我的163邮箱</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import org.bson.Document;</span><br><span class="line">import com.mongodb.client.MongoClient;</span><br><span class="line">import com.mongodb.client.MongoClients;</span><br><span class="line">import com.mongodb.client.MongoCollection;</span><br><span class="line">import com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"> public static void main( String[] args ) &#123;</span><br><span class="line">        String uri = <span class="string">&quot;mongodb+srv://Jerlyn...&quot;</span>;</span><br><span class="line">        try (MongoClient mongoClient = MongoClients.create(uri)) &#123;</span><br><span class="line">            MongoDatabase database = mongoClient.getDatabase(<span class="string">&quot;Dictionary&quot;</span>);</span><br><span class="line">            MongoCollection col = database.getCollection(<span class="string">&quot;words&quot;</span>);</span><br><span class="line">            Document sample = new Document().append(<span class="string">&quot;KanaKanji&quot;</span>, <span class="string">&quot;止める&quot;</span>).append(<span class="string">&quot;Romaji&quot;</span>, <span class="string">&quot;yameru&quot;</span>).append(<span class="string">&quot;meaning&quot;</span>, new ArrayList&lt;String&gt;(Arrays.asList(<span class="string">&quot;停止&quot;</span>, <span class="string">&quot;放弃&quot;</span>)));</span><br><span class="line">            col.insertOne(sample);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Spring-MongoDB"><a href="#Spring-MongoDB" class="headerlink" title="Spring MongoDB"></a>Spring MongoDB</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014427391/article/details/122717644">参考</a></p>
 <p>pom.xml</p>
@@ -395,7 +395,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
