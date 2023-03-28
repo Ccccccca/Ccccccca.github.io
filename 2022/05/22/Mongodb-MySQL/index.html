@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.jerlyn.ltd","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近在看GitHub上star最多的SpringBoot项目，项目中使用了MySQL、NoSql数据库Mongodb以及分布式缓存Redis。本文对MySQL和Mongodb的使用场景做一个总结。 术语对比   MySQL Mongodb    Database Database   Table Collection   Row Document   Column Field   index in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mongodb MySQL">
+<meta property="og:url" content="http://www.jerlyn.ltd/2022/05/22/Mongodb-MySQL/index.html">
+<meta property="og:site_name" content="Jerlyn&#39;s Blog">
+<meta property="og:description" content="最近在看GitHub上star最多的SpringBoot项目，项目中使用了MySQL、NoSql数据库Mongodb以及分布式缓存Redis。本文对MySQL和Mongodb的使用场景做一个总结。 术语对比   MySQL Mongodb    Database Database   Table Collection   Row Document   Column Field   index in">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-22T11:09:34.000Z">
+<meta property="article:modified_time" content="2022-05-26T22:02:29.901Z">
+<meta property="article:author" content="Jerlyn">
+<meta property="article:tag" content="Database">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.jerlyn.ltd/2022/05/22/Mongodb-MySQL/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Mongodb MySQL | Jerlyn's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jerlyn's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.jerlyn.ltd/2022/05/22/Mongodb-MySQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jerlyn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jerlyn's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mongodb MySQL
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-22 19:09:34" itemprop="dateCreated datePublished" datetime="2022-05-22T19:09:34+08:00">2022-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-27 06:02:29" itemprop="dateModified" datetime="2022-05-27T06:02:29+08:00">2022-05-27</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近在看GitHub上star最多的<a target="_blank" rel="noopener" href="https://www.macrozheng.com/">SpringBoot项目</a>，项目中使用了MySQL、NoSql数据库Mongodb以及分布式缓存Redis。本文对MySQL和Mongodb的使用场景做一个总结。</p>
+<h2 id="术语对比"><a href="#术语对比" class="headerlink" title="术语对比"></a>术语对比</h2><table>
+<thead>
+<tr>
+<th align="center">MySQL</th>
+<th align="center">Mongodb</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Database</td>
+<td align="center">Database</td>
+</tr>
+<tr>
+<td align="center">Table</td>
+<td align="center">Collection</td>
+</tr>
+<tr>
+<td align="center">Row</td>
+<td align="center">Document</td>
+</tr>
+<tr>
+<td align="center">Column</td>
+<td align="center">Field</td>
+</tr>
+<tr>
+<td align="center">index</td>
+<td align="center">index</td>
+</tr>
+<tr>
+<td align="center">PK</td>
+<td align="center">PK</td>
+</tr>
+</tbody></table>
+<p>Mongodb中没有表连接的操作</p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>In my project, I will store a huge geolocation data and I think Mongodb is the most appropriate to store this information. In addition, speed very important for me and Mongodb responds faster than Mysql.</p>
+<p>However, I will use some joins for some parts of the project, and I’m not sure whether I store user’s information in Mongodb or not. I heard some issues can occur in mongodb during writing process. should I use only mongodb with collections (instead of join) or both of them?</p>
+<p>解决方案</p>
+<p>In most situations I would recommend choosing one db for a project, if the project is not huge. On really big projects (or enterprises in general), I think long term organizations will use a combination of</p>
+<p>RDBMS for highly transactional OLTP</p>
+<p>NoSQL</p>
+<p>a datawarehousing&#x2F;BI project</p>
+<p>But for things of more reasonable scope, just pick the one that does the core of the use case, and use it for everything.</p>
+<p>IMO storing user data in mongodb is fine – you can do atomic operations on single BSON documents so operations like “allocate me this username atomically” are doable. With redo logs (–journal) (v1.8+), replication, slavedelayed replication, it is possible to have a pretty high degree of data safety – as high as other db products on paper. The main argument against safety would be the product is new and old software is always safer.</p>
+<p>If you need to do very complex ACID transactions – such as accounting – use an RDBMS.</p>
+<p>Also if you need to do a lot of reporting, mysql may be better at the moment, especially if the data set fits on one server. The SQL GROUP BY statement is quite powerful.</p>
+<p>我一直在有效学习Mongodb一周，以便用于我的项目.在我的项目中，我将存储大量的地理位置数据，我认为Mongodb最适合存储此信息.此外，速度对我来说非常重要，Mongodb的响应速度比Mysql快.<br>但是，我将在项目的某些部分使用一些联接，并且不确定是否将用户信息存储在Mongodb中.我听说在编写过程中mongodb中可能会发生一些问题.我应该只使用mongodb的集合(而不是联接)还是两者都使用?<br>推荐答案</p>
+<p>在大多数情况下，如果项目规模不大，我建议为该项目选择一个数据库.在真正的大型项目(或一般企业)上，我认为长期组织将使用<br>用于高度事务性OLTP的RDBMS<br>NoSQL<br>数据仓库&#x2F;BI项目<br>但是对于范围更合理的事情，只需选择一个用例核心，然后将其用于所有用途即可.<br>在mongodb中存储用户数据的IMO很好-您可以在单个BSON文档上执行原子操作，因此可以执行原子地分配此用户名”之类的操作.使用重做日志( –journal )(v1.8 +)，复制，奴隶制复制，可以实现相当高的数据安全性-和纸上的其他db产品一样高.反对安全性的主要论点是产品是新产品，而旧软件总是更安全.<br>如果您需要进行非常复杂的ACID交易(例如记帐)，请使用RDBMS.<br>此外，如果您需要执行大量报告，那么mysql可能会更好，特别是如果数据集适合一台服务器. SQL GROUP BY语句非常强大.</p>
+<h2 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a><a target="_blank" rel="noopener" href="http://cw.hubwiz.com/card/c/54bdfcb188dba012b4b95c9c/1/2/1/">MongoDB</a></h2><p>MongoDB是一个基于分布式文件存储的数据库，由C++语言编写，旨在为WEB应用提供<mark style="background-color:grey">可扩展</mark>的<mark style="background-color:grey">高性能</mark>数据存储解决方案。</p>
+<p>MongoDB是一个高性能，开源，无模式的文档型数据库，是Key-value存储(高性能和高扩展)和传统RDBMS(丰富的查询和功能)之间的一座桥梁。<br><font style="color:red">K-V结构如Redis，关系型数据库管理系统如MySQL</font></p>
+<h3 id="MongoDB数据的基本单元Document"><a href="#MongoDB数据的基本单元Document" class="headerlink" title="MongoDB数据的基本单元Document"></a>MongoDB数据的基本单元Document</h3><p>Document是MongoDB的核心概念，由多个键极其关联的值有序的放置在一起组成，对应MySQL的行。</p>
+<p>每个Document以BSON（Binary-JSON）文档的格式存储在磁盘上。BSON（Binary Serialized Document Format）是一种<mark style="background-color:grey">类json的一种二进制形式</mark>的存储格式，简称Binary JSON，BSON和JSON一样，支持内嵌的文档对象和数组对象，但是BSON有JSON没有的一些数据类型，如Date和BinData类型。</p>
+<p>BSON 二进制存储，支持新的数据类型Date和BinData类型等<br>优点:	灵活性高<br>缺点:	空间利用率不是很理想<br>三个特点:	轻量性、可遍历性、高效性。</p>
+<h3 id="MongoDB基本操作"><a href="#MongoDB基本操作" class="headerlink" title="MongoDB基本操作"></a>MongoDB基本操作</h3><ol>
+<li><p>查看数据库中的集合</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show collections</span><br></pre></td></tr></table></figure></li>
+<li><p>插入数据 insertOne insertMany</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DB.COLLECTION.insertOne(DOCUMENT)</span><br><span class="line">DB.COLLECTION.insertMany(List list)</span><br></pre></td></tr></table></figure></li>
+<li><p>查看集合中的Document</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DB.COLLECTION.find()</span><br></pre></td></tr></table></figure></li>
+<li><p>查询数据 find()</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DB.COLLECTION.find(CRITERIA,PROJECTION).MODIFIER();</span><br></pre></td></tr></table></figure>
+<p>eg.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">db0.users.find(</span><br><span class="line">&#123; age : &#123; <span class="variable">$gt</span>: 18&#125; &#125;,              --查询条件，比较条件</span><br><span class="line">&#123; name: 1, address:1 &#125;             --投影</span><br><span class="line">).<span class="built_in">limit</span>(5)                         --游标修饰，限制返回结果数量（其他，<span class="built_in">sort</span>()等）</span><br></pre></td></tr></table></figure>
+<h4 id="查询条件"><a href="#查询条件" class="headerlink" title="查询条件"></a>查询条件</h4><p>相等条件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;status:<span class="string">&quot;X&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>比较条件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; age : &#123; <span class="variable">$gt</span>: 18&#125; &#125;</span><br><span class="line">大于(<span class="variable">$gt</span>)、大于等于(<span class="variable">$gte</span>)、小于(<span class="variable">$lt</span>)、小于等于(<span class="variable">$lte</span>)、不等于(<span class="variable">$ne</span>)、</span><br><span class="line">包含于(<span class="variable">$in</span>)、不包含于(<span class="variable">$nin</span>)。</span><br></pre></td></tr></table></figure>
+<p>key类型为数组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">数组完全匹配：</span><br><span class="line"></span><br><span class="line">&#123; tags: [ <span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;food&#x27;</span>, <span class="string">&#x27;citrus&#x27;</span> ] &#125; </span><br><span class="line"></span><br><span class="line">单个元素匹配：</span><br><span class="line"></span><br><span class="line"> &#123; tags: <span class="string">&#x27;fruit&#x27;</span> &#125; </span><br><span class="line"></span><br><span class="line">特定元素匹配:</span><br><span class="line"></span><br><span class="line">&#123; <span class="string">&#x27;tags.0&#x27;</span> : <span class="string">&#x27;fruit&#x27;</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>包含嵌入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&quot;access.level&quot;</span>:5&#125;</span><br></pre></td></tr></table></figure>
+<p>复合条件查询</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="variable">$and</span>:[&#123;<span class="built_in">type</span>: <span class="string">&quot;food&quot;</span>&#125;,&#123; price: &#123; <span class="variable">$lt</span>: 95 &#125;&#125;]&#125;</span><br><span class="line">&#123;<span class="variable">$or</span>:[&#123;status:<span class="string">&quot;A&quot;</span>&#125;,&#123;age:30&#125;]&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>更新数据 update()<br>如果更新操作会增加文档大小，MongoDB将重新分配空间并重新定位。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upsert(可选，默认<span class="literal">false</span>，upsert既可更新记录，又可新建记录)：</span><br><span class="line"><span class="literal">true</span>：当集合中没有匹配文档时，创建文档。             </span><br><span class="line">multi(可选，默认<span class="literal">false</span>)：</span><br><span class="line"><span class="literal">true</span>：将更新全部符合条件的文档，否则仅更新一个文档。</span><br></pre></td></tr></table></figure>
+<p>eg.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db0.users.update(</span><br><span class="line">&#123; age : &#123; <span class="variable">$gt</span>: 18&#125; &#125;,              --查询条件</span><br><span class="line">&#123; <span class="variable">$set</span>: &#123; status: <span class="string">&quot;A&quot;</span>&#125; &#125; ,         --更新内容</span><br><span class="line">&#123; multi : <span class="literal">true</span>&#125;                     --更新选项，更新全部符合条件的Document</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>更新或插入一个新文档 save()<br>只能对一个文档进行操作</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DB.COLLECTION.save(DOCUMENT)</span><br></pre></td></tr></table></figure></li>
+<li><p>删除文档 remove()</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DB.COLLECTION.remove(</span><br><span class="line">query,                --删除条件，BSON类型</span><br><span class="line">justOne               --<span class="literal">true</span> or <span class="literal">false</span> 删一条还是全部符合条件的文档</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>游标<br>find命令并不直接返回结果，而是返回一个结果集的迭代器，即游标。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">想要获取数据，我们可以使用next方法来遍历游标，如下：</span><br><span class="line">var myCursor = db.inventory.find( &#123; <span class="built_in">type</span>: <span class="string">&quot;food&quot;</span> &#125; );</span><br><span class="line">var myDocument = myCursor.hasNext() ? myCursor.next() : null;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (myDocument) &#123;</span><br><span class="line">    var myItem = myDocument.item;</span><br><span class="line">    <span class="built_in">print</span>(tojson(myItem));</span><br><span class="line">&#125;</span><br><span class="line">使用forEach方法也能实现游标的遍历，如下：</span><br><span class="line">var myCursor =  db.inventory.find( &#123; <span class="built_in">type</span>: <span class="string">&quot;food&quot;</span> &#125; );</span><br><span class="line">myCursor.forEach(printjson);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="MongoDB-Atlas"><a href="#MongoDB-Atlas" class="headerlink" title="MongoDB Atlas"></a>MongoDB Atlas</h3><p>JDK 11<br>Mongodb 5.0+<br><a target="_blank" rel="noopener" href="https://cloud.mongodb.com/">https://cloud.mongodb.com/</a><br>账号我的163邮箱</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import org.bson.Document;</span><br><span class="line">import com.mongodb.client.MongoClient;</span><br><span class="line">import com.mongodb.client.MongoClients;</span><br><span class="line">import com.mongodb.client.MongoCollection;</span><br><span class="line">import com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"> public static void main( String[] args ) &#123;</span><br><span class="line">        String uri = <span class="string">&quot;mongodb+srv://Jerlyn...&quot;</span>;</span><br><span class="line">        try (MongoClient mongoClient = MongoClients.create(uri)) &#123;</span><br><span class="line">            MongoDatabase database = mongoClient.getDatabase(<span class="string">&quot;Dictionary&quot;</span>);</span><br><span class="line">            MongoCollection col = database.getCollection(<span class="string">&quot;words&quot;</span>);</span><br><span class="line">            Document sample = new Document().append(<span class="string">&quot;KanaKanji&quot;</span>, <span class="string">&quot;止める&quot;</span>).append(<span class="string">&quot;Romaji&quot;</span>, <span class="string">&quot;yameru&quot;</span>).append(<span class="string">&quot;meaning&quot;</span>, new ArrayList&lt;String&gt;(Arrays.asList(<span class="string">&quot;停止&quot;</span>, <span class="string">&quot;放弃&quot;</span>)));</span><br><span class="line">            col.insertOne(sample);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Spring-MongoDB"><a href="#Spring-MongoDB" class="headerlink" title="Spring MongoDB"></a>Spring MongoDB</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014427391/article/details/122717644">参考</a></p>
+<p>pom.xml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package com.example.dictionary.configuration;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import com.mongodb.client.MongoClient;</span><br><span class="line">import com.mongodb.client.MongoClients;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line">import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;</span><br><span class="line">import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@EnableMongoRepositories(basePackages = <span class="string">&quot;com.example.dictionary.repository&quot;</span>)</span><br><span class="line">public class MongoConfiguration extends AbstractMongoClientConfiguration &#123;</span><br><span class="line"></span><br><span class="line">    private static final String DB_NAME = <span class="string">&quot;Dictionary&quot;</span>;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public MongoClient <span class="function"><span class="title">mongoClient</span></span>() &#123;</span><br><span class="line">        String uri = <span class="string">&quot;mongodb+srv://?retryWrites=true/Dictionary&quot;</span>;</span><br><span class="line">        MongoClient mongoClient = MongoClients.create(uri);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">return</span> mongoClient;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected String <span class="function"><span class="title">getDatabaseName</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> DB_NAME;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>WordsRepository<br>WordsService<br>WordsController</p>
+<h4 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Database/" rel="tag"># Database</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/22/SpringBoot-Mongodb-Vue/" rel="prev" title="SpringBoot + Mongodb + Vue">
+      <i class="fa fa-chevron-left"></i> SpringBoot + Mongodb + Vue
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/25/%E5%89%8D%E7%AB%AF/" rel="next" title="前端">
+      前端 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">术语对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MongoDB"><span class="nav-number">3.</span> <span class="nav-text">MongoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8D%95%E5%85%83Document"><span class="nav-number">3.1.</span> <span class="nav-text">MongoDB数据的基本单元Document</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">3.2.</span> <span class="nav-text">MongoDB基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.2.1.</span> <span class="nav-text">查询条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB-Atlas"><span class="nav-number">3.3.</span> <span class="nav-text">MongoDB Atlas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-MongoDB"><span class="nav-number">4.</span> <span class="nav-text">Spring MongoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF"><span class="nav-number">4.0.1.</span> <span class="nav-text">前端</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jerlyn</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jerlyn</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

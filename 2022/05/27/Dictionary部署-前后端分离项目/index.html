@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.jerlyn.ltd","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="说明前端nohup npm run serve &amp; &#x2F;&#x2F;未使用build，未使用nginx47.115.219.150:8089 通过47.115.219.150:8088&#x2F;method可以直接获取方法返回值 部署SpringBoot步骤面板上端口放行（安全组），防火墙上添加端口号云服务器安装java、maven下载地址：Mavenhttps:&#x2F;&#x2F;dlcdn.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dictionary部署 前后端分离项目">
+<meta property="og:url" content="http://www.jerlyn.ltd/2022/05/27/Dictionary%E9%83%A8%E7%BD%B2-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="Jerlyn&#39;s Blog">
+<meta property="og:description" content="说明前端nohup npm run serve &amp; &#x2F;&#x2F;未使用build，未使用nginx47.115.219.150:8089 通过47.115.219.150:8088&#x2F;method可以直接获取方法返回值 部署SpringBoot步骤面板上端口放行（安全组），防火墙上添加端口号云服务器安装java、maven下载地址：Mavenhttps:&#x2F;&#x2F;dlcdn.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-26T21:23:16.000Z">
+<meta property="article:modified_time" content="2022-05-26T21:59:30.380Z">
+<meta property="article:author" content="Jerlyn">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://www.jerlyn.ltd/2022/05/27/Dictionary%E9%83%A8%E7%BD%B2-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Dictionary部署 前后端分离项目 | Jerlyn's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jerlyn's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.jerlyn.ltd/2022/05/27/Dictionary%E9%83%A8%E7%BD%B2-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jerlyn">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jerlyn's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dictionary部署 前后端分离项目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-27 05:23:16 / 修改时间：05:59:30" itemprop="dateCreated datePublished" datetime="2022-05-27T05:23:16+08:00">2022-05-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>前端<br>nohup npm run serve &amp; &#x2F;&#x2F;未使用build，未使用nginx<br>47.115.219.150:8089</p>
+<p>通过47.115.219.150:8088&#x2F;method可以直接获取方法返回值</p>
+<h1 id="部署SpringBoot"><a href="#部署SpringBoot" class="headerlink" title="部署SpringBoot"></a>部署SpringBoot</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>面板上端口放行（安全组），防火墙上添加端口号<br>云服务器安装java、maven<br>下载地址：<br>Maven<br><a target="_blank" rel="noopener" href="https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz">https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz</a><br>java<br><a target="_blank" rel="noopener" href="https://download.oracle.com/otn/java/jdk/11.0.15.1+2/d76aabb62f1c47aa8588b9ae5a8a5b46/jdk-11.0.15.1_linux-x64_bin.tar.gz?AuthParam=1653490091_c985417c7fc35d12f08e74f55111f59d">https://download.oracle.com/otn/java/jdk/11.0.15.1+2/d76aabb62f1c47aa8588b9ae5a8a5b46/jdk-11.0.15.1_linux-x64_bin.tar.gz?AuthParam=1653490091_c985417c7fc35d12f08e74f55111f59d</a></p>
+<p>上传：<br>scp &#x2F;Users&#x2F;goldfish&#x2F;Downloads&#x2F;jdk-11.0.15.1_linux-x64_bin.tar <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#64;&#52;&#55;&#x2e;&#x31;&#x31;&#x35;&#46;&#x32;&#49;&#57;&#x2e;&#x31;&#x35;&#48;">&#x72;&#x6f;&#x6f;&#116;&#64;&#52;&#55;&#x2e;&#x31;&#x31;&#x35;&#46;&#x32;&#49;&#57;&#x2e;&#x31;&#x35;&#48;</a>:~&#x2F;<br>解压：<br>tar -xvf jdk-11.0.15.1_linux-x64_bin.tar</p>
+<p>环境变量：<br> vim &#x2F;etc&#x2F;profile</p>
+<h3 id="java"><a href="#java" class="headerlink" title="java"></a>java</h3><p>export JAVA_HOME&#x3D;~&#x2F;jdk-11.0.15.1<br>export CLASSPATH&#x3D;$JAVA_HOME&#x2F;lib&#x2F;<br>export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin<br>export PATH JAVA_HOME CLASSPATH</p>
+<h3 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h3><p>export MAVEN_HOME&#x3D;~&#x2F;apache-maven-3.8.5<br>export PATH&#x3D;${PATH}:${MAVEN_HOME}&#x2F;bin</p>
+<h3 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h3><p>export NODE_HOME&#x3D;~&#x2F;node-v16.14.2-linux-x64<br>export PATH&#x3D;$PATH:$NODE_HOME&#x2F;bin<br>export NODE_PATH&#x3D;$NODE_HOME&#x2F;lib&#x2F;node_modules</p>
+<h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><p>export PATH&#x3D;$PATH:&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin</p>
+<p> source &#x2F;etc&#x2F;profile</p>
+<p> maven package<br> target中生成.jar文件，上传至服务器<br> 永久运行：<br> nohup java -jar  ***.jar  &amp;</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="云服务器只能用localhost-不能用公网ip"><a href="#云服务器只能用localhost-不能用公网ip" class="headerlink" title="云服务器只能用localhost 不能用公网ip"></a>云服务器只能用localhost 不能用公网ip</h3><p> curl localhost:8088&#x2F;path   ok<br> <a target="_blank" rel="noopener" href="http://47.115.219.150:8088/path">http://47.115.219.150:8088/path</a>  failed</p>
+<p>1.除了面板上放行，还要在防火墙上添加端口号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# ./nginx</span><br><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# firewall-cmd --state</span><br><span class="line">running</span><br><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# systemctl start firewalld</span><br><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# firewall-cmd --list-ports</span><br><span class="line">20/tcp 21/tcp 22/tcp 80/tcp 8888/tcp 39000-40000/tcp</span><br><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# firewall-cmd --zone=public --add-port=8088/tcp --permanent</span><br><span class="line">success</span><br><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# firewall-cmd --reload</span><br><span class="line">success</span><br><span class="line">[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# </span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1684844087386058951&wfr=spider&for=pc">参考</a><br>2.不行就application.yml复制到jar包同级目录(无关紧要)<br>server:<br>    port: 8088<br>    address: 0.0.0.0#————</p>
+<p>nohup java -jar -Dspring.config.location&#x3D;.&#x2F;application.yml Dictionary-0.0.1-SNAPSHOT.jar &amp;</p>
+<p>3.再不行 安装nginx</p>
+<h3 id="端口冲突"><a href="#端口冲突" class="headerlink" title="端口冲突"></a>端口冲突</h3><p>查看进程<br>netstat -alnp | grep 80 </p>
+<p>kill -9 进程id</p>
+<h1 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.22.0.tar.gz</span><br><span class="line">tar -xvf nginx-1.22.0.tar.gz</span><br><span class="line">cd nginx-1.22.0/</span><br><span class="line">./configure --prefix=/usr/local/nginx --with-http_mp4_module --with-http_flv_module --with-http_realip_module --with-http_ssl_module</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">cd /usr/local/nginx/sbin/</span><br><span class="line">./nginx 运行（端口占用：killall -9 nginx）</span><br><span class="line">开放80端口：</span><br><span class="line">firewall-cmd--add-port=80/tcp --permanent</span><br><span class="line">firewall-cmd --add-port=80/udp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>启动服务后，nginx默认是在80端口启动的，在浏览器输入http:&#x2F;&#x2F;公网ip:80&#x2F; (80端口默认可以省略),能正常访问到页面，说明服务启动成功</p>
+<p>linux每运行一个程序就会产生一个进程，那么可以通过查看nginx进程来判断它是否运行。<br>ps -ef | grep nginx<br>nginx监听的是80端口，那么就可以查看80端口运行的程序来判断Nginx是否运行<br>netstat -anp | grep 80</p>
+<h2 id="问题-http-47-115-219-150-80访问失败但curl-localhost-80可行"><a href="#问题-http-47-115-219-150-80访问失败但curl-localhost-80可行" class="headerlink" title="问题 http://47.115.219.150:80访问失败但curl localhost:80可行"></a>问题 <a href="http://47.115.219.150:80访问失败但curl">http://47.115.219.150:80访问失败但curl</a> localhost:80可行</h2><p>安全组端口放行、防火墙放行<br>仍不行</p>
+<p>[root@iZf8zcbc4b2h1ft3t3pz42Z sbin]# netstat -anp | grep 80<br>tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      157526&#x2F;nginx: maste<br>tcp        0      0 127.0.0.1:8081          0.0.0.0:*               LISTEN      150135&#x2F;node<br>tcp        0      0 172.21.164.94:40872     100.100.30.26:80        ESTABLISHED 1094&#x2F;AliYunDun<br>tcp6       0      0 :::8088                 :::*                    LISTEN      152882&#x2F;java<br>java和node服务开着 kill掉进程即可（也行是还没加载好…）</p>
+<h2 id="nginx相关"><a href="#nginx相关" class="headerlink" title="nginx相关"></a>nginx相关</h2><p>Nginx (engine x) 是一个高性能的HTTP和反向代理web服务器，其特点是占有内存少，并发能力强。<br>Nginx提供的负载均衡策略有2种：内置策略和扩展策略。内置策略为轮询，加权轮询，Ip hash。<br>动静分离，在我们的软件开发中，有些请求是需要后台处理的，有些请求是不需要经过后台处理的（如：css、html、jpg、js等等文件），这些不需要经过后台处理的文件称为静态文件。让动态网站里的动态网页根据一定规则把不变的资源和经常变的资源区分开来，动静资源做好了拆分以后，我们就可以根据静态资源的特点将其做缓存操作。提高资源响应的速度。</p>
+<p>常用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/nginx/sbin/</span><br><span class="line">./nginx  启动</span><br><span class="line">nginx -t 查看配置文件 </span><br><span class="line">./nginx -s stop  停止</span><br><span class="line">./nginx -s quit  安全退出</span><br><span class="line">./nginx -s reload  重新加载配置文件</span><br><span class="line">ps aux|grep nginx  查看nginx进程</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="卸载宝塔"><a href="#卸载宝塔" class="headerlink" title="卸载宝塔"></a>卸载宝塔</h1><p>&#x2F;etc&#x2F;init.d&#x2F;bt stop &amp;&amp; chkconfig –del bt &amp;&amp; rm -f &#x2F;etc&#x2F;init.d&#x2F;bt &amp;&amp; rm -rf &#x2F;www&#x2F;server&#x2F;panel<br>删除 &#x2F;www&#x2F;server&#x2F;</p>
+<h1 id="Vue部署"><a href="#Vue部署" class="headerlink" title="Vue部署"></a>Vue部署</h1><p>1.<br>&#x2F;root&#x2F;project&#x2F;front&#x2F;vue.config.js:6<br>    host : ‘0.0.0.0’,</p>
+<p>2.<br> $ which nohup             #复制这个地址<br>$ vi ~&#x2F;.bash_profile      # 在最后一行，PATH&#x3D;$PATH:$HOME&#x2F;bin:&#x2F;usr&#x2F;bin&#x2F;nohup<br>$ source ~&#x2F;.bash_profile  # 加载环境变量<br>$ nohup npm run serve &amp;   #执行后台启动命令<br>————————————————<br>版权声明：本文为CSDN博主「WHJwhj552200」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/WHJwhj552200/article/details/124447796">https://blog.csdn.net/WHJwhj552200/article/details/124447796</a></p>
+<p>npm run serve 是本地环境运行，会在本地用node.js生成一个web服务从而访问页面<br>npm run build 是打包生成静态文件，通常我们把静态文件上传到服务器后会通过nginx或者tomcat启动一个后台服务器的web服务然后通过配置让该服务指向静态文件达到访问页面的目的<br>两者之前的区别其实就是web服务生成个启动方式，例如本地运行的时候可以从代码里配置代理来解决跨域问题但是打包以后放服务器上以后代理就不生效了，因为本地代码的代理配置只是对本地启用的node服务进行的配置，如果线上需要做代理就必须在页面部署所用的服务中再进行配置。关于开发环境与生产环境其实只是项目中的一个默认全局变量，默认是开发环境只是执行打包的时候脚手架把默认值修改成了生产环境</p>
+<p>作者：Long<br>链接：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/453498224/answer/1827721622">https://www.zhihu.com/question/453498224/answer/1827721622</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h1 id="域名访问-ip：端口-47-115-219-150-8089"><a href="#域名访问-ip：端口-47-115-219-150-8089" class="headerlink" title="域名访问 ip：端口 47.115.219.150:8089"></a>域名访问 ip：端口 47.115.219.150:8089</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Onedog_/article/details/117263298">https://blog.csdn.net/Onedog_/article/details/117263298</a></p>
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><p>前端<br>nohup npm run serve &amp;<br>47.115.219.150:8089</p>
+<p>后端<br>nohup java -jar -Dspring.config.location&#x3D;.&#x2F;application.yml Dictionary-0.0.1-SNAPSHOT.jar &amp;<br>47.115.219.150:8088&#x2F;view</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/27/Dictionary/" rel="prev" title="Dictionary">
+      <i class="fa fa-chevron-left"></i> Dictionary
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/27/AI-Art/" rel="next" title="AI Art">
+      AI Art <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2SpringBoot"><span class="nav-number">2.</span> <span class="nav-text">部署SpringBoot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.1.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java"><span class="nav-number">2.1.1.</span> <span class="nav-text">java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven"><span class="nav-number">2.1.2.</span> <span class="nav-text">maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nodejs"><span class="nav-number">2.1.3.</span> <span class="nav-text">nodejs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx"><span class="nav-number">2.1.4.</span> <span class="nav-text">nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%AA%E8%83%BD%E7%94%A8localhost-%E4%B8%8D%E8%83%BD%E7%94%A8%E5%85%AC%E7%BD%91ip"><span class="nav-number">2.2.1.</span> <span class="nav-text">云服务器只能用localhost 不能用公网ip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%86%B2%E7%AA%81"><span class="nav-number">2.2.2.</span> <span class="nav-text">端口冲突</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nginx"><span class="nav-number">3.</span> <span class="nav-text">安装nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-http-47-115-219-150-80%E8%AE%BF%E9%97%AE%E5%A4%B1%E8%B4%A5%E4%BD%86curl-localhost-80%E5%8F%AF%E8%A1%8C"><span class="nav-number">3.1.</span> <span class="nav-text">问题 http:&#x2F;&#x2F;47.115.219.150:80访问失败但curl localhost:80可行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx%E7%9B%B8%E5%85%B3"><span class="nav-number">3.2.</span> <span class="nav-text">nginx相关</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E5%AE%9D%E5%A1%94"><span class="nav-number">4.</span> <span class="nav-text">卸载宝塔</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue%E9%83%A8%E7%BD%B2"><span class="nav-number">5.</span> <span class="nav-text">Vue部署</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE-ip%EF%BC%9A%E7%AB%AF%E5%8F%A3-47-115-219-150-8089"><span class="nav-number">6.</span> <span class="nav-text">域名访问 ip：端口 47.115.219.150:8089</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">7.</span> <span class="nav-text">启动</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jerlyn</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jerlyn</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
